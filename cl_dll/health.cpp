@@ -156,7 +156,7 @@ void CHudHealth::GetPainColor( int &r, int &g, int &b )
 #else
 	if (m_iHealth > 25)
 	{
-		UnpackRGB(r,g,b, RGB_YELLOWISH);
+		UnpackRGB(r,g,b, RGB_BLUEISH);
 	}
 	else
 	{
@@ -271,7 +271,7 @@ void CHudHealth::CalcDamageDirection(vec3_t vecFrom)
 		}
 		else
 		{
-			float f = fabs(side);
+			float f = ffabs(side);
 			if (f > 0.3)
 				m_fAttackRear = max(m_fAttackRear, f);
 		}
@@ -283,7 +283,7 @@ void CHudHealth::CalcDamageDirection(vec3_t vecFrom)
 		}
 		else
 		{
-			float f = fabs(front);
+			float f = ffabs(front);
 			if (f > 0.3)
 				m_fAttackLeft = max(m_fAttackLeft, f);
 		}
@@ -372,9 +372,9 @@ int CHudHealth::DrawDamage(float flTime)
 	if (!m_bitsDamage)
 		return 1;
 
-	UnpackRGB(r,g,b, RGB_YELLOWISH);
+	UnpackRGB(r,g,b, RGB_BLUEISH);
 	
-	a = (int)( fabs(sin(flTime*2)) * 256.0);
+	a = (int)( ffabs(sin(flTime*2)) * 256.0);
 
 	ScaleColors(r, g, b, a);
 

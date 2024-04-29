@@ -490,7 +490,7 @@ int CHudAmmo::MsgFunc_AmmoX(const char *pszName, int iSize, void *pbuf)
 	int iIndex = READ_BYTE();
 	int iCount = READ_BYTE();
 
-	gWR.SetAmmo( iIndex, abs(iCount) );
+	gWR.SetAmmo( iIndex, fabs(iCount) );
 
 	return 1;
 }
@@ -502,7 +502,7 @@ int CHudAmmo::MsgFunc_AmmoPickup( const char *pszName, int iSize, void *pbuf )
 	int iCount = READ_BYTE();
 
 	// Add ammo to the history
-	gHR.AddToHistory( HISTSLOT_AMMO, iIndex, abs(iCount) );
+	gHR.AddToHistory( HISTSLOT_AMMO, iIndex, fabs(iCount) );
 
 	return 1;
 }
@@ -600,7 +600,7 @@ int CHudAmmo::MsgFunc_CurWeapon(const char *pszName, int iSize, void *pbuf )
 		return 0;
 
 	if ( iClip < -1 )
-		pWeapon->iClip = abs(iClip);
+		pWeapon->iClip = fabs(iClip);
 	else
 		pWeapon->iClip = iClip;
 
@@ -867,7 +867,7 @@ int CHudAmmo::Draw(float flTime)
 	if (m_fFade > 0)
 		m_fFade -= (gHUD.m_flTimeDelta * 20);
 
-	UnpackRGB(r,g,b, RGB_YELLOWISH);
+	UnpackRGB(r,g,b, RGB_BLUEISH);
 
 	ScaleColors(r, g, b, a );
 
@@ -896,7 +896,7 @@ int CHudAmmo::Draw(float flTime)
 
 			x += AmmoWidth/2;
 
-			UnpackRGB(r,g,b, RGB_YELLOWISH);
+			UnpackRGB(r,g,b, RGB_BLUEISH);
 
 			// draw the | bar
 			FillRGBA(x, y, iBarWidth, gHUD.m_iFontHeight, r, g, b, a);
@@ -969,7 +969,7 @@ int DrawBar(int x, int y, int width, int height, float f)
 		width -= w;
 	}
 
-	UnpackRGB(r, g, b, RGB_YELLOWISH);
+	UnpackRGB(r, g, b, RGB_BLUEISH);
 
 	FillRGBA(x, y, width, height, r, g, b, 128);
 
@@ -1045,7 +1045,7 @@ int CHudAmmo::DrawWList(float flTime)
 	{
 		int iWidth;
 
-		UnpackRGB(r,g,b, RGB_YELLOWISH);
+		UnpackRGB(r,g,b, RGB_BLUEISH);
 	
 		if ( iActiveSlot == i )
 			a = 255;
@@ -1097,7 +1097,7 @@ int CHudAmmo::DrawWList(float flTime)
 				if ( !p || !p->iId )
 					continue;
 
-				UnpackRGB( r,g,b, RGB_YELLOWISH );
+				UnpackRGB( r,g,b, RGB_BLUEISH );
 			
 				// if active, then we must have ammo.
 
@@ -1139,7 +1139,7 @@ int CHudAmmo::DrawWList(float flTime)
 		{
 			// Draw Row of weapons.
 
-			UnpackRGB(r,g,b, RGB_YELLOWISH);
+			UnpackRGB(r,g,b, RGB_BLUEISH);
 
 			for ( int iPos = 0; iPos < MAX_WEAPON_POSITIONS; iPos++ )
 			{
@@ -1150,7 +1150,7 @@ int CHudAmmo::DrawWList(float flTime)
 
 				if ( gWR.HasAmmo(p) )
 				{
-					UnpackRGB(r,g,b, RGB_YELLOWISH);
+					UnpackRGB(r,g,b, RGB_BLUEISH);
 					a = 128;
 				}
 				else

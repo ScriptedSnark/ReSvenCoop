@@ -210,6 +210,16 @@ int __MsgFunc_MOTD(const char *pszName, int iSize, void *pbuf)
 	return 0;
 }
 
+int __MsgFunc_ServerBuild(const char *pszName, int iSize, void* pbuf)
+{
+	BEGIN_READ( pbuf, iSize );
+
+	char* build = READ_STRING();
+	strncpy( gHUD.m_szServerBuild, build, sizeof(gHUD.m_szServerBuild) );
+
+	return 0;
+}
+
 int __MsgFunc_BuildSt(const char *pszName, int iSize, void *pbuf)
 {
 	if (gViewPort)
@@ -303,6 +313,7 @@ void CHud :: Init( void )
 	HOOK_MESSAGE( Feign );
 	HOOK_MESSAGE( Detpack );
 	HOOK_MESSAGE( MOTD );
+	HOOK_MESSAGE( ServerBuild );
 	HOOK_MESSAGE( BuildSt );
 	HOOK_MESSAGE( RandomPC );
 	HOOK_MESSAGE( ServerName );

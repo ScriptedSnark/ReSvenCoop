@@ -21,8 +21,8 @@
 //
 
 
-#define RGB_YELLOWISH 0x00FFA000 //255,160,0
-#define RGB_REDISH 0x00FF1010 //255,160,0
+#define RGB_BLUEISH 0x006482C8  //100,130,200
+#define RGB_REDISH 0x00FF1010 //255,16,16
 #define RGB_GREENISH 0x0000A000 //0,160,0
 
 #ifndef _WIN32
@@ -641,6 +641,7 @@ public:
 	// sprite indexes
 	int m_HUD_number_0;
 
+	char m_szServerBuild[128];
 
 	void AddHudElem(CHudBase *p);
 

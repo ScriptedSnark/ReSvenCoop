@@ -104,6 +104,12 @@ int __MsgFunc_InitHUD(const char *pszName, int iSize, void *pbuf)
 	return 1;
 }
 
+int __MsgFunc_CdAudio(const char* pszName, int iSize, void* pbuf)
+{
+	gHUD.MsgFunc_CdAudio( pszName, iSize, pbuf );
+	return 1;
+}
+
 int __MsgFunc_ViewMode(const char *pszName, int iSize, void *pbuf)
 {
 	gHUD.MsgFunc_ViewMode( pszName, iSize, pbuf );
@@ -297,6 +303,7 @@ void CHud :: Init( void )
 	HOOK_MESSAGE( ResetHUD );
 	HOOK_MESSAGE( GameMode );
 	HOOK_MESSAGE( InitHUD );
+	HOOK_MESSAGE( CdAudio );
 	HOOK_MESSAGE( ViewMode );
 	HOOK_MESSAGE( SetFOV );
 	HOOK_MESSAGE( Concuss );

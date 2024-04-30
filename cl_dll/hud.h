@@ -633,6 +633,8 @@ public:
 	int _cdecl MsgFunc_Logo(const char *pszName,  int iSize, void *pbuf);
 	int _cdecl MsgFunc_ResetHUD(const char *pszName,  int iSize, void *pbuf);
 	void _cdecl MsgFunc_InitHUD( const char *pszName, int iSize, void *pbuf );
+	void _cdecl MsgFunc_CdAudio(const char* pszName, int iSize, void* pbuf);
+
 	void _cdecl MsgFunc_ViewMode( const char *pszName, int iSize, void *pbuf );
 	int _cdecl MsgFunc_SetFOV(const char *pszName,  int iSize, void *pbuf);
 	int  _cdecl MsgFunc_Concuss( const char *pszName, int iSize, void *pbuf );

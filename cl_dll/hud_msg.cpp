@@ -20,6 +20,7 @@
 #include "cl_util.h"
 #include "parsemsg.h"
 #include "r_efx.h"
+#include "port.h"
 
 #include "particleman.h"
 extern IParticleMan *g_pParticleMan;
@@ -95,6 +96,36 @@ void CHud :: MsgFunc_InitHUD( const char *pszName, int iSize, void *pbuf )
 #endif
 }
 
+void CHud :: MsgFunc_CdAudio( const char* pszName, int iSize, void* pbuf )
+{
+	char pathBuf[MAX_PATH];
+	char cmdBuf[400];
+
+	BEGIN_READ( pbuf, iSize );
+	int audioNum = READ_BYTE();
+
+	if (audioNum > 30)
+		return;
+
+	if (audioNum <= 0)
+	{
+#ifdef RESVEN_FIXES
+		gEngfuncs.pfnClientCmd(";mp3 stop;\n");
+#else
+		gEngfuncs.pfnClientCmd("mp3 stop");
+#endif
+	}
+	else
+	{
+		sprintf( pathBuf, "media/Half-Life%02d", audioNum - 1 );
+#ifdef RESVEN_FIXES
+		sprintf( cmdBuf, ";mp3 play %s;\n", pathBuf );
+#else
+		sprintf( cmdBuf, "mp3 play %s", pathBuf );
+#endif
+		gEngfuncs.pfnClientCmd(cmdBuf);
+	}
+}
 
 int CHud :: MsgFunc_GameMode(const char *pszName, int iSize, void *pbuf )
 {

@@ -38,6 +38,47 @@ float HUD_GetFOV( void );
 
 extern cvar_t *sensitivity;
 
+// Debug
+
+#define DEBUG_LINE_THICKNESS 1
+#define DEBUG_LINE_LENGTH 9
+#define DEBUG_LINE_OFFSET 4
+
+void DRAW_DEBUG_LINE_V(int x, int y)
+{
+	if (gHUD.m_pCvarDebug->value >= 1.0)
+		gEngfuncs.pfnFillRGBA(x, y - DEBUG_LINE_OFFSET, DEBUG_LINE_THICKNESS, DEBUG_LINE_LENGTH, 0, 255, 0, 255);
+}
+
+void DRAW_DEBUG_LINE_H(int x, int y)
+{
+	if (gHUD.m_pCvarDebug->value >= 1.0)
+		gEngfuncs.pfnFillRGBA(x - DEBUG_LINE_OFFSET, y, DEBUG_LINE_LENGTH, DEBUG_LINE_THICKNESS, 0, 255, 0, 255);
+}
+
+void DRAW_DEBUG_CROSS(int x, int y)
+{
+	if (gHUD.m_pCvarDebug->value >= 1.0)
+	{
+		DRAW_DEBUG_LINE_V(x, y);
+		DRAW_DEBUG_LINE_H(x, y);
+	}
+}
+
+void DRAW_DEBUG_RECT(int x, int y, int w, int h)
+{
+	if (w < 0 && h < 0)
+		return;
+
+	if (gHUD.m_pCvarDebug->value >= 2.0)
+	{
+		gEngfuncs.pfnFillRGBA(x, y, DEBUG_LINE_THICKNESS, h, 0, 255, 0, 255);
+		gEngfuncs.pfnFillRGBA(x + w - DEBUG_LINE_THICKNESS, y, DEBUG_LINE_THICKNESS, h, 0, 255, 0, 255);
+		gEngfuncs.pfnFillRGBA(x, y, w, DEBUG_LINE_THICKNESS, 0, 255, 0, 255);
+		gEngfuncs.pfnFillRGBA(x, y + h - DEBUG_LINE_THICKNESS, w, 1, 0, 255, 0, 255);
+	}
+}
+
 // Think
 void CHud::Think(void)
 {
@@ -232,11 +273,14 @@ void ScaleColors( int &r, int &g, int &b, int a )
 
 int CHud :: DrawHudString(int xpos, int ypos, int iMaxX, char *szIt, int r, int g, int b )
 {
+	DRAW_DEBUG_CROSS(xpos, ypos);
 	return xpos + gEngfuncs.pfnDrawString( xpos, ypos, szIt, r, g, b);
 }
 
 int CHud :: DrawHudNumberString( int xpos, int ypos, int iMinX, int iNumber, int r, int g, int b )
 {
+	DRAW_DEBUG_CROSS(xpos, ypos);
+
 	char szString[32];
 	sprintf( szString, "%d", iNumber );
 	return DrawHudStringReverse( xpos, ypos, iMinX, szString, r, g, b );
@@ -246,11 +290,14 @@ int CHud :: DrawHudNumberString( int xpos, int ypos, int iMinX, int iNumber, int
 // draws a string from right to left (right-aligned)
 int CHud :: DrawHudStringReverse( int xpos, int ypos, int iMinX, char *szString, int r, int g, int b )
 {
+	DRAW_DEBUG_CROSS(xpos, ypos);
 	return xpos - gEngfuncs.pfnDrawStringReverse( xpos, ypos, szString, r, g, b);
 }
 
 int CHud :: DrawHudNumber( int x, int y, int iFlags, int iNumber, int r, int g, int b)
 {
+	DRAW_DEBUG_CROSS(x, y);
+
 	int iWidth = GetSpriteRect(m_HUD_number_0).right - GetSpriteRect(m_HUD_number_0).left;
 	int k;
 	

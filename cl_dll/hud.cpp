@@ -337,10 +337,16 @@ void CHud :: Init( void )
 	m_iLogo = 0;
 	m_iFOV = 0;
 
+	m_pCvarDraw = CVAR_CREATE("hud_draw", "1", FCVAR_CLIENTDLL);
+	m_pCvarDebug = CVAR_CREATE("hud_debug", "0", FCVAR_CLIENTDLL);
+	m_pCvarHideCustom = CVAR_CREATE("hud_hidecustom", "0", FCVAR_CLIENTDLL);
+	m_pCvarBorderSize = CVAR_CREATE("hud_bordersize", "16", FCVAR_CLIENTDLL | FCVAR_ARCHIVE);
+	m_pCvarAlphaDefault = CVAR_CREATE("hud_alpha_default", "160", FCVAR_CLIENTDLL | FCVAR_ARCHIVE);
+	m_pCvarAlphaMax = CVAR_CREATE("hud_alpha_max", "255", FCVAR_CLIENTDLL | FCVAR_ARCHIVE);
+	m_pCvarStealMouse = CVAR_CREATE("hud_capturemouse", "1", FCVAR_ARCHIVE);
+	default_fov = CVAR_CREATE("default_fov", "70", FCVAR_ARCHIVE);
+
 	CVAR_CREATE( "zoom_sensitivity_ratio", "1.2", 0 );
-	default_fov = CVAR_CREATE( "default_fov", "90", 0 );
-	m_pCvarStealMouse = CVAR_CREATE( "hud_capturemouse", "1", FCVAR_ARCHIVE );
-	m_pCvarDraw = CVAR_CREATE( "hud_draw", "1", FCVAR_ARCHIVE );
 	cl_lw = gEngfuncs.pfnGetCvarPointer( "cl_lw" );
 
 	m_pSpriteList = NULL;

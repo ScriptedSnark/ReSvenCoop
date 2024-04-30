@@ -166,6 +166,10 @@ inline void PlaySound( int iSound, float vol ) { gEngfuncs.pfnPlaySoundByIndex( 
 #define min(a, b)  (((a) < (b)) ? (a) : (b))
 #define ffabs(x)	   ((x) > 0 ? (x) : 0 - (x))
 
+void DRAW_DEBUG_LINE_V(int x, int y);
+void DRAW_DEBUG_LINE_H(int x, int y);
+void DRAW_DEBUG_CROSS(int x, int y);
+void DRAW_DEBUG_RECT(int x, int y, int w, int h);
 void ScaleColors( int &r, int &g, int &b, int a );
 
 #define DotProduct(x,y) ((x)[0]*(y)[0]+(x)[1]*(y)[1]+(x)[2]*(y)[2])

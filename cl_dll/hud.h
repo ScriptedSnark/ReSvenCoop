@@ -563,8 +563,14 @@ public:
 	int		m_iFOV;
 	int		m_Teamplay;
 	int		m_iRes;
-	cvar_t  *m_pCvarStealMouse;
 	cvar_t	*m_pCvarDraw;
+	cvar_t	*m_pCvarDebug;
+	cvar_t	*m_pCvarHideCustom;
+	cvar_t	*m_pCvarBorderSize;
+	cvar_t	*m_pCvarAlphaDefault;
+	cvar_t	*m_pCvarAlphaMax;
+	cvar_t	*m_pCvarStealMouse;
+
 
 	int m_iFontHeight;
 	int DrawHudNumber(int x, int y, int iFlags, int iNumber, int r, int g, int b );

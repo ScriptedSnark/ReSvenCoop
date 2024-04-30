@@ -665,3 +665,5 @@ extern int g_iUser1;
 extern int g_iUser2;
 extern int g_iUser3;
 
+extern cvar_t *g_pDeveloper;
+extern cvar_t *g_pCrosshair;

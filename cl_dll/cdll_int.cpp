@@ -50,6 +50,7 @@ cl_enginefunc_t gEngfuncs;
 CHud gHUD;
 TeamFortressViewport *gViewPort = NULL;
 
+cvar_t *g_pDeveloper, *g_pCrosshair;
 
 #include "particleman.h"
 CSysModule *g_hParticleManModule = NULL;
@@ -152,6 +153,9 @@ int CL_DLLEXPORT Initialize( cl_enginefunc_t *pEnginefuncs, int iVersion )
 		return 0;
 
 	memcpy(&gEngfuncs, pEnginefuncs, sizeof(cl_enginefunc_t));
+
+	g_pDeveloper = gEngfuncs.pfnGetCvarPointer("developer");
+	g_pCrosshair = gEngfuncs.pfnGetCvarPointer("crosshair");
 
 	EV_HookEvents();
 	CL_LoadParticleMan();

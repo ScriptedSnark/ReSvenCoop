@@ -409,4 +409,30 @@ int CHud::GetNumWidth( int iNumber, int iFlags )
 
 }	
 
+int CHud::GetDefaultAlpha()
+{
+	int alpha = m_pCvarAlphaDefault->value;
 
+	if (alpha > 255)
+		return 255;
+
+	if (alpha < 0)
+		return 0;
+
+	return alpha;
+}
+
+int CHud::GetMaxAlpha()
+{
+	int alpha = GetDefaultAlpha();
+
+	if (alpha <= m_pCvarAlphaMax->value)
+	{
+		alpha = m_pCvarAlphaMax->value;
+
+		if (m_pCvarAlphaMax->value > 255)
+			return 255;
+	}
+
+	return alpha;
+}

@@ -224,8 +224,6 @@ int CHud :: Redraw( float flTime, int intermission )
 
 		if (m_hsprLogo == 0)
 			m_hsprLogo = LoadSprite("sprites/%d_logo.spr");
-
-		SPR_Set(m_hsprLogo, 250, 250, 250 );
 		
 		x = SPR_Width(m_hsprLogo, 0);
 		x = ScreenWidth - x;
@@ -235,7 +233,7 @@ int CHud :: Redraw( float flTime, int intermission )
 		int iFrame = (int)(flTime * 20) % MAX_LOGO_FRAMES;
 		i = grgLogoFrame[iFrame] - 1;
 
-		SPR_DrawAdditive(i, x, y, NULL);
+		gHUD.DrawSprite(x, y, m_hsprLogo, NULL, 250, 250, 250, i, SPR_ADDITIVE);
 	}
 
 	/*
@@ -271,7 +269,34 @@ void ScaleColors( int &r, int &g, int &b, int a )
 	b = (int)(b * x);
 }
 
-int CHud :: DrawHudString(int xpos, int ypos, int iMaxX, char *szIt, int r, int g, int b )
+int CHud::DrawSprite(int x, int y, HSPRITE sprite, wrect_t* rc, int r, int g, int b, int frame, SPR_MODE mode)
+{
+	gEngfuncs.pfnSPR_Set(sprite, r, g, b);
+	
+	switch (mode)
+	{
+		default:
+		case 0:
+			gEngfuncs.pfnSPR_DrawAdditive(frame, x, y, rc);
+			break;
+		case 1:
+			gEngfuncs.pfnSPR_Draw(frame, x, y, rc);
+			break;
+		case 2:
+			gEngfuncs.pfnSPR_DrawHoles(frame, x, y, rc);
+			break;
+	}
+
+	DRAW_DEBUG_CROSS(x, y);
+
+	if (!rc)
+		return x;
+
+	DRAW_DEBUG_RECT(x, y, rc->right - rc->left, rc->bottom - rc->top);
+	return x + rc->right - rc->left;
+}
+
+int CHud :: DrawString(int xpos, int ypos, int iMaxX, char *szIt, int r, int g, int b )
 {
 	DRAW_DEBUG_CROSS(xpos, ypos);
 	return xpos + gEngfuncs.pfnDrawString( xpos, ypos, szIt, r, g, b);
@@ -283,12 +308,12 @@ int CHud :: DrawHudNumberString( int xpos, int ypos, int iMinX, int iNumber, int
 
 	char szString[32];
 	sprintf( szString, "%d", iNumber );
-	return DrawHudStringReverse( xpos, ypos, iMinX, szString, r, g, b );
+	return DrawStringReverse( xpos, ypos, iMinX, szString, r, g, b );
 
 }
 
 // draws a string from right to left (right-aligned)
-int CHud :: DrawHudStringReverse( int xpos, int ypos, int iMinX, char *szString, int r, int g, int b )
+int CHud :: DrawStringReverse( int xpos, int ypos, int iMinX, char *szString, int r, int g, int b )
 {
 	DRAW_DEBUG_CROSS(xpos, ypos);
 	return xpos - gEngfuncs.pfnDrawStringReverse( xpos, ypos, szString, r, g, b);
@@ -306,9 +331,8 @@ int CHud :: DrawHudNumber( int x, int y, int iFlags, int iNumber, int r, int g, 
 		// SPR_Draw 100's
 		if (iNumber >= 100)
 		{
-			 k = iNumber/100;
-			SPR_Set(GetSprite(m_HUD_number_0 + k), r, g, b );
-			SPR_DrawAdditive( 0, x, y, &GetSpriteRect(m_HUD_number_0 + k));
+			k = iNumber/100;
+			DrawSprite(x, y, GetSprite(m_HUD_number_0 + k), &GetSpriteRect(m_HUD_number_0 + k), r, g, b, 0, SPR_ADDITIVE);
 			x += iWidth;
 		}
 		else if (iFlags & (DHN_3DIGITS))
@@ -321,8 +345,7 @@ int CHud :: DrawHudNumber( int x, int y, int iFlags, int iNumber, int r, int g, 
 		if (iNumber >= 10)
 		{
 			k = (iNumber % 100)/10;
-			SPR_Set(GetSprite(m_HUD_number_0 + k), r, g, b );
-			SPR_DrawAdditive( 0, x, y, &GetSpriteRect(m_HUD_number_0 + k));
+			DrawSprite(x, y, GetSprite(m_HUD_number_0 + k), &GetSpriteRect(m_HUD_number_0 + k), r, g, b, 0, SPR_ADDITIVE);
 			x += iWidth;
 		}
 		else if (iFlags & (DHN_3DIGITS | DHN_2DIGITS))
@@ -333,14 +356,11 @@ int CHud :: DrawHudNumber( int x, int y, int iFlags, int iNumber, int r, int g, 
 
 		// SPR_Draw ones
 		k = iNumber % 10;
-		SPR_Set(GetSprite(m_HUD_number_0 + k), r, g, b );
-		SPR_DrawAdditive(0,  x, y, &GetSpriteRect(m_HUD_number_0 + k));
+		DrawSprite(x, y, GetSprite(m_HUD_number_0 + k), &GetSpriteRect(m_HUD_number_0 + k), r, g, b, 0, SPR_ADDITIVE);
 		x += iWidth;
 	} 
 	else if (iFlags & DHN_DRAWZERO) 
 	{
-		SPR_Set(GetSprite(m_HUD_number_0), r, g, b );
-
 		// SPR_Draw 100's
 		if (iFlags & (DHN_3DIGITS))
 		{
@@ -355,8 +375,7 @@ int CHud :: DrawHudNumber( int x, int y, int iFlags, int iNumber, int r, int g, 
 		}
 
 		// SPR_Draw ones
-		
-		SPR_DrawAdditive( 0,  x, y, &GetSpriteRect(m_HUD_number_0));
+		DrawSprite(x, y, GetSprite(m_HUD_number_0), &GetSpriteRect(m_HUD_number_0), r, g, b, 0, SPR_ADDITIVE);
 		x += iWidth;
 	}
 

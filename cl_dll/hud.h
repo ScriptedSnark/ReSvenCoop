@@ -50,6 +50,13 @@ typedef struct {
 	unsigned char r,g,b,a;
 } RGBA;
 
+enum SPR_MODE
+{
+	SPR_ADDITIVE = 0,
+	SPR_NORMAL,
+	SPR_TRANSPARENT
+};
+
 typedef struct cvar_s cvar_t;
 
 
@@ -573,9 +580,10 @@ public:
 
 
 	int m_iFontHeight;
+	int DrawSprite(int x, int y, HSPRITE sprite, wrect_t* rc, int r, int g, int b, int frame, SPR_MODE mode);
 	int DrawHudNumber(int x, int y, int iFlags, int iNumber, int r, int g, int b );
-	int DrawHudString(int x, int y, int iMaxX, char *szString, int r, int g, int b );
-	int DrawHudStringReverse( int xpos, int ypos, int iMinX, char *szString, int r, int g, int b );
+	int DrawString(int x, int y, int iMaxX, char *szString, int r, int g, int b );
+	int DrawStringReverse( int xpos, int ypos, int iMinX, char *szString, int r, int g, int b );
 	int DrawHudNumberString( int xpos, int ypos, int iMinX, int iNumber, int r, int g, int b );
 	int GetNumWidth(int iNumber, int iFlags);
 

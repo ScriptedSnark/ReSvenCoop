@@ -213,8 +213,7 @@ int CHudHealth::Draw(float flTime)
 		y = ScreenHeight - gHUD.m_iFontHeight - gHUD.m_iFontHeight / 2;
 		x = CrossWidth /2;
 
-		SPR_Set(gHUD.GetSprite(m_HUD_cross), r, g, b);
-		SPR_DrawAdditive(0, x, y, &gHUD.GetSpriteRect(m_HUD_cross));
+		gHUD.DrawSprite(x, y, gHUD.GetSprite(m_HUD_cross), &gHUD.GetSpriteRect(m_HUD_cross), r, g, b, 0, SPR_ADDITIVE);
 
 		x = CrossWidth + HealthWidth / 2;
 
@@ -309,11 +308,11 @@ int CHudHealth::DrawPain(float flTime)
 		GetPainColor(r,g,b);
 		shade = a * max( m_fAttackFront, 0.5 );
 		ScaleColors(r, g, b, shade);
-		SPR_Set(m_hSprite, r, g, b );
 
 		x = ScreenWidth/2 - SPR_Width(m_hSprite, 0)/2;
 		y = ScreenHeight/2 - SPR_Height(m_hSprite,0) * 3;
-		SPR_DrawAdditive(0, x, y, NULL);
+
+		gHUD.DrawSprite(x, y, m_hSprite, NULL, r, g, b, 0, SPR_ADDITIVE);
 		m_fAttackFront = max( 0, m_fAttackFront - fFade );
 	} else
 		m_fAttackFront = 0;
@@ -323,11 +322,10 @@ int CHudHealth::DrawPain(float flTime)
 		GetPainColor(r,g,b);
 		shade = a * max( m_fAttackRight, 0.5 );
 		ScaleColors(r, g, b, shade);
-		SPR_Set(m_hSprite, r, g, b );
 
 		x = ScreenWidth/2 + SPR_Width(m_hSprite, 1) * 2;
 		y = ScreenHeight/2 - SPR_Height(m_hSprite,1)/2;
-		SPR_DrawAdditive(1, x, y, NULL);
+		gHUD.DrawSprite(x, y, m_hSprite, NULL, r, g, b, 1, SPR_ADDITIVE);
 		m_fAttackRight = max( 0, m_fAttackRight - fFade );
 	} else
 		m_fAttackRight = 0;
@@ -337,11 +335,10 @@ int CHudHealth::DrawPain(float flTime)
 		GetPainColor(r,g,b);
 		shade = a * max( m_fAttackRear, 0.5 );
 		ScaleColors(r, g, b, shade);
-		SPR_Set(m_hSprite, r, g, b );
 
 		x = ScreenWidth/2 - SPR_Width(m_hSprite, 2)/2;
 		y = ScreenHeight/2 + SPR_Height(m_hSprite,2) * 2;
-		SPR_DrawAdditive(2, x, y, NULL);
+		gHUD.DrawSprite(x, y, m_hSprite, NULL, r, g, b, 2, SPR_ADDITIVE);
 		m_fAttackRear = max( 0, m_fAttackRear - fFade );
 	} else
 		m_fAttackRear = 0;
@@ -351,11 +348,10 @@ int CHudHealth::DrawPain(float flTime)
 		GetPainColor(r,g,b);
 		shade = a * max( m_fAttackLeft, 0.5 );
 		ScaleColors(r, g, b, shade);
-		SPR_Set(m_hSprite, r, g, b );
 
 		x = ScreenWidth/2 - SPR_Width(m_hSprite, 3) * 3;
 		y = ScreenHeight/2 - SPR_Height(m_hSprite,3)/2;
-		SPR_DrawAdditive(3, x, y, NULL);
+		gHUD.DrawSprite(x, y, m_hSprite, NULL, r, g, b, 3, SPR_ADDITIVE);
 
 		m_fAttackLeft = max( 0, m_fAttackLeft - fFade );
 	} else
@@ -385,8 +381,7 @@ int CHudHealth::DrawDamage(float flTime)
 		if (m_bitsDamage & giDmgFlags[i])
 		{
 			pdmg = &m_dmg[i];
-			SPR_Set(gHUD.GetSprite(m_HUD_dmg_bio + i), r, g, b );
-			SPR_DrawAdditive(0, pdmg->x, pdmg->y, &gHUD.GetSpriteRect(m_HUD_dmg_bio + i));
+			gHUD.DrawSprite(pdmg->x, pdmg->y, gHUD.GetSprite(m_HUD_dmg_bio + i), &gHUD.GetSpriteRect(m_HUD_dmg_bio + i), r, g, b, 0, SPR_ADDITIVE);
 		}
 	}
 

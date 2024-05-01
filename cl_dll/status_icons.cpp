@@ -66,8 +66,7 @@ int CHudStatusIcons::Draw( float flTime )
 		{
 			y -= ( m_IconList[i].rc.bottom - m_IconList[i].rc.top ) + 5;
 			
-			SPR_Set( m_IconList[i].spr, m_IconList[i].r, m_IconList[i].g, m_IconList[i].b );
-			SPR_DrawAdditive( 0, x, y, &m_IconList[i].rc );
+			gHUD.DrawSprite(x, y, m_IconList[i].spr, &m_IconList[i].rc, m_IconList[i].r, m_IconList[i].g, m_IconList[i].b, 0, SPR_ADDITIVE);
 		}
 	}
 	

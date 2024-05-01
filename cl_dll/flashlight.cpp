@@ -121,15 +121,13 @@ int CHudFlashlight::Draw(float flTime)
 	x = ScreenWidth - m_iWidth - m_iWidth/2 ;
 
 	// Draw the flashlight casing
-	SPR_Set(m_hSprite1, r, g, b );
-	SPR_DrawAdditive( 0,  x, y, m_prc1);
+	gHUD.DrawSprite(x, y, m_hSprite1, m_prc1, r, g, b, 0, SPR_ADDITIVE);
 
 	if ( m_fOn )
 	{  // draw the flashlight beam
 		x = ScreenWidth - m_iWidth/2;
 
-		SPR_Set( m_hBeam, r, g, b );
-		SPR_DrawAdditive( 0, x, y, m_prcBeam );
+		gHUD.DrawSprite(x, y, m_hBeam, m_prcBeam, r, g, b, 0, SPR_ADDITIVE);
 	}
 
 	// draw the flashlight energy level
@@ -140,8 +138,7 @@ int CHudFlashlight::Draw(float flTime)
 		rc = *m_prc2;
 		rc.left += iOffset;
 
-		SPR_Set(m_hSprite2, r, g, b );
-		SPR_DrawAdditive( 0, x + iOffset, y, &rc);
+		gHUD.DrawSprite(x + iOffset, y, m_hSprite2, &rc, r, g, b, 0, SPR_ADDITIVE);
 	}
 
 

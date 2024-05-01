@@ -142,13 +142,10 @@ int CHudBattery::Draw(float flTime)
 	if ( !m_hSprite2 )
 		m_hSprite2 = gHUD.GetSprite( gHUD.GetSpriteIndex( "suit_full" ) );
 
-	SPR_Set(m_hSprite1, r, g, b );
-	SPR_DrawAdditive( 0,  x, y - iOffset, m_prc1);
-
+	gHUD.DrawSprite(x, y - iOffset, m_hSprite1, m_prc1, r, g, b, 0, SPR_ADDITIVE);
 	if (rc.bottom > rc.top)
 	{
-		SPR_Set(m_hSprite2, r, g, b );
-		SPR_DrawAdditive( 0, x, y - iOffset + (rc.top - m_prc2->top), &rc);
+		gHUD.DrawSprite(x, y - iOffset + (rc.top - m_prc2->top), m_hSprite2, &rc, r, g, b, 0, SPR_ADDITIVE);
 	}
 
 	x += (m_prc1->right - m_prc1->left);

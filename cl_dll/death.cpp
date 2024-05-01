@@ -137,8 +137,7 @@ int CHudDeathNotice :: Draw( float flTime )
 			}
 
 			// Draw death weapon
-			SPR_Set( gHUD.GetSprite(id), r, g, b );
-			SPR_DrawAdditive( 0, x, y, &gHUD.GetSpriteRect(id) );
+			gHUD.DrawSprite(x, y, gHUD.GetSprite(id), &gHUD.GetSpriteRect(id), r, g, b, 0, SPR_ADDITIVE);
 
 			x += (gHUD.GetSpriteRect(id).right - gHUD.GetSpriteRect(id).left);
 

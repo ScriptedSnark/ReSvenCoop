@@ -77,8 +77,7 @@ int CHudAmmoSecondary :: Draw(float flTime)
 		x -= (gHUD.GetSpriteRect(m_HUD_ammoicon).right - gHUD.GetSpriteRect(m_HUD_ammoicon).left);
 		y -= (gHUD.GetSpriteRect(m_HUD_ammoicon).top - gHUD.GetSpriteRect(m_HUD_ammoicon).bottom);
 
-		SPR_Set( gHUD.GetSprite(m_HUD_ammoicon), r, g, b );
-		SPR_DrawAdditive( 0, x, y, &gHUD.GetSpriteRect(m_HUD_ammoicon) );
+		gHUD.DrawSprite(x, y, gHUD.GetSprite(m_HUD_ammoicon), &gHUD.GetSpriteRect(m_HUD_ammoicon), r, g, b, 0, SPR_ADDITIVE);
 	}
 	else
 	{  // move the cursor by the '0' char instead, since we don't have an icon to work with

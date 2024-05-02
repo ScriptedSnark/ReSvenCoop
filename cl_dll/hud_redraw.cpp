@@ -436,3 +436,14 @@ int CHud::GetMaxAlpha()
 
 	return alpha;
 }
+
+void CHud::UpdateFade(float& fFade)
+{
+	if (fFade > MIN_ALPHA)
+		fFade = MIN_ALPHA;
+
+	fFade -= gHUD.m_flTimeDelta * 20;
+
+	if (fFade < 0.0)
+		fFade = 0.0;
+}

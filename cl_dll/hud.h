@@ -587,7 +587,8 @@ public:
 	int DrawHudNumberString( int xpos, int ypos, int iMinX, int iNumber, int r, int g, int b );
 	int GetNumWidth(int iNumber, int iFlags);
 	int GetDefaultAlpha();
-	int GetMaxAlpha()
+	int GetMaxAlpha();
+	void UpdateFade(float& fFade);
 
 private:
 	// the memory for these arrays are allocated in the first call to CHud::VidInit(), when the hud.txt and associated sprites are loaded.

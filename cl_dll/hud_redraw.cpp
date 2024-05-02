@@ -447,3 +447,14 @@ void CHud::UpdateFade(float& fFade)
 	if (fFade < 0.0)
 		fFade = 0.0;
 }
+
+int CHud::GetFadeAlpha(float a)
+{
+	int DefaultAlpha = GetDefaultAlpha();
+	int MaxAlpha = GetMaxAlpha();
+
+	if (a <= 0.0)
+		return DefaultAlpha;
+	else
+		return (a / 100.0 * (MaxAlpha - DefaultAlpha) + DefaultAlpha);
+}

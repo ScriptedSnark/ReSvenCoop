@@ -589,6 +589,7 @@ public:
 	int GetDefaultAlpha();
 	int GetMaxAlpha();
 	void UpdateFade(float& fFade);
+	int GetFadeAlpha(float a);
 
 private:
 	// the memory for these arrays are allocated in the first call to CHud::VidInit(), when the hud.txt and associated sprites are loaded.

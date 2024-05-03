@@ -276,13 +276,13 @@ int CHud::DrawSprite(int x, int y, HSPRITE sprite, wrect_t* rc, int r, int g, in
 	switch (mode)
 	{
 		default:
-		case 0:
+		case SPR_ADDITIVE:
 			gEngfuncs.pfnSPR_DrawAdditive(frame, x, y, rc);
 			break;
-		case 1:
+		case SPR_NORMAL:
 			gEngfuncs.pfnSPR_Draw(frame, x, y, rc);
 			break;
-		case 2:
+		case SPR_TRANSPARENT:
 			gEngfuncs.pfnSPR_DrawHoles(frame, x, y, rc);
 			break;
 	}

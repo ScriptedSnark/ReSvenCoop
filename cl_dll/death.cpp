@@ -45,26 +45,37 @@ static int DEATHNOTICE_DISPLAY_TIME = 6;
 
 DeathNoticeItem rgDeathNoticeList[ MAX_DEATHNOTICES + 1 ];
 
-float g_ColorBlue[3]	= { 0.6, 0.8, 1.0 };
+float g_ColorBlue[3]	= { 0.25, 0.25, 1.0 };
 float g_ColorRed[3]		= { 1.0, 0.25, 0.25 };
-float g_ColorGreen[3]	= { 0.6, 1.0, 0.6 };
-float g_ColorYellow[3]	= { 1.0, 0.7, 0.0 };
-float g_ColorGrey[3]	= { 0.8, 0.8, 0.8 };
+float g_ColorGreen[3]	= { 0.25, 1.0, 0.25 };
+float g_ColorYellow[3]	= { 1.0, 1.0, 0.25 };
+float g_ColorDefault[3]	= { 0.70, 0.86, 1.00 };
+float g_ColorPlayer[3]	= { 0.60, 0.75, 1.00 };
+float g_ColorServer[3]	= { 1.00, 0.67, 0.25 };
+
 
 float *GetClientColor( int clientIndex )
 {
+	if (clientIndex < 0)
+	{
+		return g_ColorDefault;
+	}
+	else if (clientIndex == 0)
+	{
+		return g_ColorServer;
+	}
+
 	switch ( g_PlayerExtraInfo[clientIndex].teamnumber )
 	{
 	case 1:	return g_ColorBlue;
 	case 2: return g_ColorRed;
 	case 3: return g_ColorYellow;
 	case 4: return g_ColorGreen;
-	case 0: return g_ColorYellow;
 
-		default	: return g_ColorGrey;
+		default	: break;
 	}
 
-	return NULL;
+	return g_ColorPlayer;
 }
 
 int CHudDeathNotice :: Init( void )

@@ -581,6 +581,7 @@ public:
 
 	int m_iFontHeight;
 	int DrawSprite(int x, int y, HSPRITE sprite, wrect_t* rc, int r, int g, int b, int frame, SPR_MODE mode);
+	int DrawConsoleString(int x, int y, char* szString);
 	int DrawHudNumber(int x, int y, int iFlags, int iNumber, int r, int g, int b );
 	int DrawString(int x, int y, int iMaxX, char *szString, int r, int g, int b );
 	int DrawStringReverse( int xpos, int ypos, int iMinX, char *szString, int r, int g, int b );

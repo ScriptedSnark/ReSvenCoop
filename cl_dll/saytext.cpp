@@ -139,11 +139,11 @@ int CHudSayText :: Draw( float flTime )
 					strncpy( buf, g_szLineBuffer[i], min(g_iNameLengths[i], MAX_PLAYER_NAME_LENGTH+32) );
 					buf[ min(g_iNameLengths[i], MAX_PLAYER_NAME_LENGTH+31) ] = 0;
 					gEngfuncs.pfnDrawSetTextColor( g_pflNameColors[i][0], g_pflNameColors[i][1], g_pflNameColors[i][2] );
-					int x = DrawConsoleString( LINE_START, y, buf + 1 ); // don't draw the control code at the start
+					int x = gHUD.DrawConsoleString( LINE_START, y, buf + 1 ); // don't draw the control code at the start
 					strncpy( buf, g_szLineBuffer[i] + g_iNameLengths[i], strlen( g_szLineBuffer[i] ));
 					buf[ strlen( g_szLineBuffer[i] + g_iNameLengths[i] ) - 1 ] = '\0';
 					// color is reset after each string draw
-					DrawConsoleString( x, y, buf ); 
+					gHUD.DrawConsoleString( x, y, buf ); 
 				}
 				else
 				{
@@ -153,7 +153,7 @@ int CHudSayText :: Draw( float flTime )
 			else
 			{
 				// normal draw
-				DrawConsoleString( LINE_START, y, g_szLineBuffer[i] );
+				gHUD.DrawConsoleString( LINE_START, y, g_szLineBuffer[i] );
 			}
 		}
 

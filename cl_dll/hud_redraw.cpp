@@ -296,6 +296,20 @@ int CHud::DrawSprite(int x, int y, HSPRITE sprite, wrect_t* rc, int r, int g, in
 	return x + rc->right - rc->left;
 }
 
+int CHud :: DrawConsoleString(int xpos, int ypos, char* szString)
+{
+	if (gHUD.m_pCvarDebug->value > 0.0)
+	{
+		DRAW_DEBUG_CROSS(xpos, ypos);
+
+		int length, height;
+		gEngfuncs.pfnDrawConsoleStringLen(szString, &length, &height);
+		DRAW_DEBUG_RECT(xpos, ypos, length, height);
+	}
+
+	return gEngfuncs.pfnDrawConsoleString(xpos, ypos, szString);
+}
+
 int CHud :: DrawString(int xpos, int ypos, int iMaxX, char *szIt, int r, int g, int b )
 {
 	DRAW_DEBUG_CROSS(xpos, ypos);

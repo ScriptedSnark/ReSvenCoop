@@ -58,8 +58,8 @@ typedef struct client_data_s
 
 	// fields that can be changed by the cldll
 	vec3_t viewangles;
+	int		pad[2];
 	int		iWeaponBits;
-//	int		iAccessoryBits;
 	float	fov;	// field of view
 } client_data_t;
 

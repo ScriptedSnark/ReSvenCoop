@@ -149,12 +149,18 @@ public:
 
 	virtual void setText(const char* text)
 	{
+		// std::isspace assert-fails on UTF-8 chars
+		auto fnIsSpace = [](char c)
+			{
+				return c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r';
+			};
+
 		// strip any non-alnum characters from the end
 		char buf[512];
 		strcpy(buf, text);
 
 		int len = strlen(buf);
-		while (len && isspace(buf[--len]))
+		while (len && fnIsSpace(buf[--len]))
 		{
 			buf[len] = 0;
 		}

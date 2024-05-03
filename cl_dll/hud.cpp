@@ -296,6 +296,29 @@ int __MsgFunc_AllowSpec(const char *pszName, int iSize, void *pbuf)
 	return 0;
 }
 
+int __MsgFunc_StartSound(const char* pszName, int iSize, void* pbuf)
+{
+	BEGIN_READ( pbuf, iSize );
+
+	int flags = READ_SHORT();
+	int entindex = READ_SHORT();
+	int attn = READ_BYTE();
+	float offset = READ_FLOAT();
+	int channel = READ_BYTE();
+	int soundindex = READ_SHORT();
+
+	/*
+	m.WriteShort(int16(49172)); // ??? (flags, probably)
+	m.WriteShort(0);            // entity index
+	m.WriteByte(0);             // ??? (value doesn't seem to matter)
+	m.WriteFloat(5.234);        // offset in seconds
+	m.WriteByte(7);             // sound channel
+	m.WriteShort(711);          // sound index (subtract 4 from the line number in soundcache/mapname.txt)
+	*/
+
+	return 0;
+}
+
 // This is called every time the DLL is loaded
 void CHud :: Init( void )
 {
@@ -336,6 +359,8 @@ void CHud :: Init( void )
 
 	// VGUI Menus
 	HOOK_MESSAGE( VGUIMenu );
+
+	HOOK_MESSAGE( StartSound );
 
 	CVAR_CREATE( "hud_classautokill", "1", FCVAR_ARCHIVE | FCVAR_USERINFO );		// controls whether or not to suicide immediately on TF class switch
 	CVAR_CREATE( "hud_takesshots", "0", FCVAR_ARCHIVE );		// controls whether or not to automatically take screenshots at the end of a round

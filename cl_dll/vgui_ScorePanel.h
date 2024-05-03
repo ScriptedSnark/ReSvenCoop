@@ -25,7 +25,7 @@
 #define COLUMN_TRACKER	0
 #define COLUMN_NAME		1
 #define COLUMN_CLASS	2
-#define COLUMN_KILLS	3
+#define COLUMN_SCORE	3
 #define COLUMN_DEATHS	4
 #define COLUMN_LATENCY	5
 #define COLUMN_VOICE	6

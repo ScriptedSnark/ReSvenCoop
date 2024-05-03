@@ -243,19 +243,21 @@ protected:
 
 struct extra_player_info_t 
 {
-	short frags;
-	short deaths;
+	float score;
+	int deaths;
 	short playerclass;
-	short health; // UNUSED currently, spectator UI would like this
-	bool dead; // UNUSED currently, spectator UI would like this
 	short teamnumber;
 	char teamname[MAX_TEAM_NAME];
+	float health;
+	float armor;
+	char padding[4];
+//	bool dead; // UNUSED currently, spectator UI would like this
 };
 
 struct team_info_t 
 {
 	char name[MAX_TEAM_NAME];
-	short frags;
+	float score;
 	short deaths;
 	short ping;
 	short packetloss;

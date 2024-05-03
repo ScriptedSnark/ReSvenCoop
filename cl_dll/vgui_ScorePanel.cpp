@@ -294,15 +294,6 @@ void ScorePanel::Update()
 	m_PlayerList.SetScrollRange(m_iRows);
 
 	FillGrid();
-
-	if ( gViewPort->m_pSpectatorPanel->m_menuVisible )
-	{
-		 m_pCloseButton->setVisible ( true );
-	}
-	else 
-	{
-		 m_pCloseButton->setVisible ( false );
-	}
 }
 
 //-----------------------------------------------------------------------------
@@ -315,7 +306,7 @@ void ScorePanel::SortTeams()
 	for ( i = 1; i <= m_iNumTeams; i++ )
 	{
 		if ( !g_TeamInfo[i].scores_overriden )
-			g_TeamInfo[i].frags = g_TeamInfo[i].deaths = 0;
+			g_TeamInfo[i].score = g_TeamInfo[i].deaths = 0;
 		g_TeamInfo[i].ping = g_TeamInfo[i].packetloss = 0;
 	}
 
@@ -340,7 +331,7 @@ void ScorePanel::SortTeams()
 
 		if ( !g_TeamInfo[j].scores_overriden )
 		{
-			g_TeamInfo[j].frags += g_PlayerExtraInfo[i].frags;
+			g_TeamInfo[j].score += g_PlayerExtraInfo[i].score;
 			g_TeamInfo[j].deaths += g_PlayerExtraInfo[i].deaths;
 		}
 
@@ -379,13 +370,13 @@ void ScorePanel::SortTeams()
 			if ( g_TeamInfo[i].players < 1 )
 				continue;
 
-			if ( !g_TeamInfo[i].already_drawn && g_TeamInfo[i].frags >= highest_frags )
+			if ( !g_TeamInfo[i].already_drawn && g_TeamInfo[i].score >= highest_frags )
 			{
-				if ( g_TeamInfo[i].frags > highest_frags || g_TeamInfo[i].deaths < lowest_deaths )
+				if ( g_TeamInfo[i].score > highest_frags || g_TeamInfo[i].deaths < lowest_deaths )
 				{
 					best_team = i;
 					lowest_deaths = g_TeamInfo[i].deaths;
-					highest_frags = g_TeamInfo[i].frags;
+					highest_frags = g_TeamInfo[i].score;
 				}
 			}
 		}
@@ -425,18 +416,18 @@ void ScorePanel::SortPlayers( int iTeam, char *team )
 
 		for ( int i = 1; i < MAX_PLAYERS; i++ )
 		{
-			if ( m_bHasBeenSorted[i] == false && g_PlayerInfoList[i].name && g_PlayerExtraInfo[i].frags >= highest_frags )
+			if ( m_bHasBeenSorted[i] == false && g_PlayerInfoList[i].name && g_PlayerExtraInfo[i].score >= highest_frags )
 			{
 				cl_entity_t *ent = gEngfuncs.GetEntityByIndex( i );
 
 				if ( ent && !(team && stricmp(g_PlayerExtraInfo[i].teamname, team)) )  
 				{
 					extra_player_info_t *pl_info = &g_PlayerExtraInfo[i];
-					if ( pl_info->frags > highest_frags || pl_info->deaths < lowest_deaths )
+					if ( pl_info->score > highest_frags || pl_info->deaths < lowest_deaths )
 					{
 						best_player = i;
 						lowest_deaths = pl_info->deaths;
-						highest_frags = pl_info->frags;
+						highest_frags = pl_info->score;
 					}
 				}
 			}
@@ -731,9 +722,9 @@ void ScorePanel::FillGrid()
 					break;
 				case COLUMN_CLASS:
 					break;
-				case COLUMN_KILLS:
+				case COLUMN_SCORE:
 					if ( m_iIsATeam[row] == TEAM_YES )
-						sprintf(sz, "%d",  team_info->frags );
+						sprintf(sz, "%.0f", team_info->score );
 					break;
 				case COLUMN_DEATHS:
 					if ( m_iIsATeam[row] == TEAM_YES )
@@ -824,22 +815,8 @@ void ScorePanel::FillGrid()
 					*/
 					break;
 
-#ifdef _TFC
-				case COLUMN_KILLS:
-					if (g_PlayerExtraInfo[ m_iSortedRows[row] ].teamnumber)
-						sprintf(sz, "%d",  g_PlayerExtraInfo[ m_iSortedRows[row] ].frags );
-					break;
-				case COLUMN_DEATHS:
-					if (g_PlayerExtraInfo[ m_iSortedRows[row] ].teamnumber)
-						sprintf(sz, "%d",  g_PlayerExtraInfo[ m_iSortedRows[row] ].deaths );
-					break;
-				case COLUMN_LATENCY:
-					if (g_PlayerExtraInfo[ m_iSortedRows[row] ].teamnumber)
-						sprintf(sz, "%d", g_PlayerInfoList[ m_iSortedRows[row] ].ping );
-					break;
-#else
-				case COLUMN_KILLS:
-					sprintf(sz, "%d",  g_PlayerExtraInfo[ m_iSortedRows[row] ].frags );
+				case COLUMN_SCORE:
+					sprintf(sz, "%d", (int)g_PlayerExtraInfo[ m_iSortedRows[row] ].score );
 					break;
 				case COLUMN_DEATHS:
 					sprintf(sz, "%d",  g_PlayerExtraInfo[ m_iSortedRows[row] ].deaths );
@@ -847,7 +824,6 @@ void ScorePanel::FillGrid()
 				case COLUMN_LATENCY:
 					sprintf(sz, "%d", g_PlayerInfoList[ m_iSortedRows[row] ].ping );
 					break;
-#endif
 				default:
 					break;
 				}

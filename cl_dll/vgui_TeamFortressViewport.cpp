@@ -2048,10 +2048,6 @@ void TeamFortressViewport::CreateSpectatorMenu()
 // Recalculate any menus that use it.
 void TeamFortressViewport::UpdateOnPlayerInfo()
 {
-	if (m_pTeamMenu)
-		m_pTeamMenu->Update();
-	if (m_pClassMenu)
-		m_pClassMenu->Update();
 	if (m_pScoreBoard)
 		m_pScoreBoard->Update();
 }
@@ -2436,21 +2432,25 @@ int TeamFortressViewport::MsgFunc_ScoreInfo( const char *pszName, int iSize, voi
 {
 	BEGIN_READ( pbuf, iSize );
 	short cl = READ_BYTE();
-	short frags = READ_SHORT();
-	short deaths = READ_SHORT();
+	float score = READ_FLOAT();
+	int deaths = READ_LONG();
+	float health = READ_FLOAT();
+	float armor = READ_FLOAT();
+	short unk1 = READ_BYTE();
+	short unk2 = 0;
 	short playerclass = READ_SHORT();
 	short teamnumber = READ_SHORT();
 
 	if ( cl > 0 && cl <= MAX_PLAYERS )
 	{
-		g_PlayerExtraInfo[cl].frags = frags;
+		g_PlayerExtraInfo[cl].score = score;
+		g_PlayerExtraInfo[cl].health = health;
 		g_PlayerExtraInfo[cl].deaths = deaths;
+		g_PlayerExtraInfo[cl].armor = armor;
+//		g_PlayerExtraInfo[cl].unk1 = unk1;
+//		g_PlayerExtraInfo[cl].unk2 = unk2;
 		g_PlayerExtraInfo[cl].playerclass = playerclass;
 		g_PlayerExtraInfo[cl].teamnumber = teamnumber;
-
-		//Dont go bellow 0!
-		if ( g_PlayerExtraInfo[cl].teamnumber < 0 )
-			 g_PlayerExtraInfo[cl].teamnumber = 0;
 
 		UpdateOnPlayerInfo();
 	}
@@ -2482,7 +2482,7 @@ int TeamFortressViewport::MsgFunc_TeamScore( const char *pszName, int iSize, voi
 
 	// use this new score data instead of combined player scoresw
 	g_TeamInfo[i].scores_overriden = TRUE;
-	g_TeamInfo[i].frags = READ_SHORT();
+	g_TeamInfo[i].score = READ_SHORT();
 	g_TeamInfo[i].deaths = READ_SHORT();
 
 	return 1;

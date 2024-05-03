@@ -16,7 +16,7 @@ enum
 { 
 	MAX_PLAYERS = 32,
 	MAX_TEAMS = 64,
-	MAX_TEAM_NAME = 16,
+	MAX_TEAM_NAME = 64,
 };
 
 #define MAX_SCORES					10

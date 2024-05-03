@@ -85,13 +85,14 @@ using namespace vgui;
 
 // Team Colors
 int iNumberOfTeamColors = 5;
-int iTeamColors[5][3] =
+int iTeamColors[6][3] =
 {
-	{ 255, 170, 0 },	// HL orange (default)
-	{ 125, 165, 210 },	// Blue
-	{ 200, 90, 70 },	// Red
-	{ 225, 205, 45 },	// Yellow
-	{ 145, 215, 140 },	// Green
+	{ 101, 128, 152 },	// Sven Co-op dark blue (default)
+	{ 31, 95, 255 },	// Blue
+	{ 255, 31, 31 },	// Red
+	{ 255, 255, 95 },	// Yellow
+	{ 31, 255, 95 },	// Green
+	{ 255, 255, 255 },	// White
 };
 
 

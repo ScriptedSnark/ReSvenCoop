@@ -65,7 +65,7 @@ void ScaleColors( int &r, int &g, int &b, int a );
 extern char *sTFClassSelection[];
 extern int sTFValidClassInts[];
 extern char *sLocalisedClasses[];
-extern int iTeamColors[5][3];
+extern int iTeamColors[6][3];
 extern int iNumberOfTeamColors;
 extern TeamFortressViewport *gViewPort;
 

@@ -30,6 +30,8 @@
 #include "demo.h"
 #include "demo_api.h"
 #include "vgui_ScorePanel.h"
+#include "pmtrace.h"
+#include "pm_defs.h"
 
 hud_player_info_t	 g_PlayerInfoList[MAX_PLAYERS+1];	   // player info from the engine
 extra_player_info_t  g_PlayerExtraInfo[MAX_PLAYERS+1];   // additional player info sent directly to the client dll
@@ -84,6 +86,8 @@ extern client_sprite_t *GetSpriteList(client_sprite_t *pList, const char *psz, i
 extern cvar_t *sensitivity;
 cvar_t *cl_lw = NULL;
 
+extern vec3_t v_origin;
+
 void ShutdownInput (void);
 
 //DECLARE_MESSAGE(m_Logo, Logo)
@@ -131,7 +135,31 @@ int __MsgFunc_GameMode(const char *pszName, int iSize, void *pbuf )
 	return gHUD.MsgFunc_GameMode( pszName, iSize, pbuf );
 }
 
+void __CmdFunc_npc_moveto(void)
+{
+	// in pseudocode we use player origin, I guess?
+	// anyway, v_origin can give accurate result - ScriptedSnark
+	//cl_entity_t* localPlayer = gEngfuncs.GetLocalPlayer();
 
+	//if (localPlayer)
+	//{
+	Vector forward;
+	Vector viewAngles;
+
+	gEngfuncs.GetViewAngles(viewAngles);
+
+	AngleVectors(viewAngles, forward, NULL, NULL);
+	VectorScale(forward, 2048, forward);
+	VectorAdd(forward, v_origin, forward);
+
+	pmtrace_t* tr = gEngfuncs.PM_TraceLine(v_origin, forward, PM_NORMAL, 2, -1);
+
+	if (tr->fraction != 1.0)
+		gEngfuncs.pEfxAPI->R_SparkShower(tr->endpos);
+
+	gEngfuncs.pfnServerCmdUnreliable("npc_moveto");
+	//}
+}
 
 // TFFree Command Menu
 void __CmdFunc_OpenCommandMenu(void)
@@ -351,6 +379,8 @@ void CHud :: Init( void )
 	HOOK_MESSAGE( ViewMode );
 	HOOK_MESSAGE( SetFOV );
 	HOOK_MESSAGE( Concuss );
+
+	HOOK_COMMAND( "npc_moveto", npc_moveto );
 
 	// TFFree CommandMenu
 	HOOK_COMMAND( "+commandmenu", OpenCommandMenu );

@@ -572,6 +572,7 @@ public:
 	int		m_iHideHUDDisplay;
 	int		m_iFOV;
 	int		m_Teamplay;
+	bool	m_bClassicMode;
 	int		m_iRes;
 	cvar_t	*m_pCvarDraw;
 	cvar_t	*m_pCvarDebug;
@@ -656,6 +657,7 @@ public:
 	void _cdecl MsgFunc_ViewMode( const char *pszName, int iSize, void *pbuf );
 	int _cdecl MsgFunc_SetFOV(const char *pszName,  int iSize, void *pbuf);
 	int  _cdecl MsgFunc_Concuss( const char *pszName, int iSize, void *pbuf );
+	int _cdecl MsgFunc_ClassicMode(const char* pszName, int iSize, void* pbuf);
 
 	// Screen information
 	SCREENINFO	m_scrinfo;

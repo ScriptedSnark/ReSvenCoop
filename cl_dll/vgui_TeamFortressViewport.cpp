@@ -585,7 +585,7 @@ TeamFortressViewport::TeamFortressViewport(int x,int y,int wide,int tall) : Pane
 		// used for orange borders around buttons
 		m_SchemeManager.getBorderColor( hPrimaryScheme, r, g, b, a );
 		// pScheme->setColor(Scheme::sc_secondary1, r, g, b, a );
-		pScheme->setColor(Scheme::sc_secondary1, 255*0.7, 170*0.7, 0, 0);
+		pScheme->setColor(Scheme::sc_secondary1, 255, 255, 255, 0);
 	}
 
 	// Change the second primary font (used in the scoreboard)

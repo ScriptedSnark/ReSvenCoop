@@ -65,7 +65,7 @@ typedef struct cvar_s cvar_t;
 
 #define MAX_PLAYER_NAME_LENGTH		32
 
-#define	MAX_MOTD_LENGTH				1536
+#define	MAX_MOTD_LENGTH				3072
 
 //
 //-----------------------------------------------------

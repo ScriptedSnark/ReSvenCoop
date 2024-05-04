@@ -2385,9 +2385,15 @@ int TeamFortressViewport::MsgFunc_MOTD( const char *pszName, int iSize, void *pb
 	m_szMOTD[ sizeof(m_szMOTD)-1 ] = '\0';
 
 	// don't show MOTD for HLTV spectators
-	if ( m_iGotAllMOTD && !gEngfuncs.IsSpectateOnly() )
+	if ( m_iGotAllMOTD )
 	{
-		ShowVGUIMenu( MENU_INTRO );
+		if ( m_szMOTD[0] )
+			ShowVGUIMenu( MENU_INTRO );
+	}
+	else
+	{
+		strncpy(m_szMOTD, "No server MOTD available.", sizeof(m_szMOTD));
+		ShowVGUIMenu( MENU_MAPBRIEFING );
 	}
 
 	return 1;
@@ -2534,10 +2540,6 @@ int TeamFortressViewport::MsgFunc_AllowSpec( const char *pszName, int iSize, voi
 
 	// Force the menu to update
 	UpdateCommandMenu( m_StandardMenu );
-
-	// If the team menu is up, update it too
-	if (m_pTeamMenu)
-		m_pTeamMenu->Update();
 
 	return 1;
 }

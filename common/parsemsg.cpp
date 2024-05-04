@@ -160,7 +160,7 @@ char* READ_STRING( void )
 
 float READ_COORD( void )
 {
-	return (float)(READ_SHORT() * (1.0/8));
+	return (float)(READ_LONG() * (1.0/8));
 }
 
 float READ_ANGLE( void )

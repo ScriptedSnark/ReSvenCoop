@@ -31,7 +31,7 @@
 DECLARE_MESSAGE(m_Health, Health )
 DECLARE_MESSAGE(m_Health, Damage )
 
-#define PAIN_NAME "sprites/%d_pain.spr"
+#define PAIN_NAME "sprites/pain.spr"
 #define DAMAGE_NAME "sprites/%d_dmg.spr"
 
 int giDmgHeight, giDmgWidth;
@@ -87,7 +87,7 @@ void CHudHealth::Reset( void )
 
 int CHudHealth::VidInit(void)
 {
-	m_hSprite = 0;
+	m_hSprite = LoadSprite(PAIN_NAME);
 
 	m_HUD_dmg_bio = gHUD.GetSpriteIndex( "dmg_bio" ) + 1;
 	m_HUD_cross = gHUD.GetSpriteIndex( "cross" );
@@ -101,7 +101,7 @@ int CHudHealth:: MsgFunc_Health(const char *pszName,  int iSize, void *pbuf )
 {
 	// TODO: update local health data
 	BEGIN_READ( pbuf, iSize );
-	int x = READ_BYTE();
+	int x = READ_LONG();
 
 	m_iFlags |= HUD_ACTIVE;
 
@@ -145,15 +145,6 @@ void CHudHealth::GetPainColor( int &r, int &g, int &b )
 {
 	int iHealth = m_iHealth;
 
-	if (iHealth > 25)
-		iHealth -= 25;
-	else if ( iHealth < 0 )
-		iHealth = 0;
-#if 0
-	g = iHealth * 255 / 100;
-	r = 255 - g;
-	b = 0;
-#else
 	if (m_iHealth > 25)
 	{
 		UnpackRGB(r,g,b, RGB_BLUEISH);
@@ -164,7 +155,6 @@ void CHudHealth::GetPainColor( int &r, int &g, int &b )
 		g = 0;
 		b = 0;
 	}
-#endif 
 }
 
 int CHudHealth::Draw(float flTime)
@@ -173,11 +163,8 @@ int CHudHealth::Draw(float flTime)
 	int a = 0, x, y;
 	int HealthWidth;
 
-	if ( (gHUD.m_iHideHUDDisplay & HIDEHUD_HEALTH) || gEngfuncs.IsSpectateOnly() )
+	if ( (gHUD.m_iHideHUDDisplay & HIDEHUD_HEALTH) )
 		return 1;
-
-	if ( !m_hSprite )
-		m_hSprite = LoadSprite(PAIN_NAME);
 	
 	// Has health changed? Flash the health #
 	if (m_fFade)
@@ -223,7 +210,8 @@ int CHudHealth::Draw(float flTime)
 
 		int iHeight = gHUD.m_iFontHeight;
 		int iWidth = HealthWidth/10;
-		FillRGBA(x, y, iWidth, iHeight, 255, 160, 0, a);
+		UnpackRGB(r, g, b, RGB_BLUEISH);
+		FillRGBA(x, y, iWidth, iHeight, r, g, b, a);
 	}
 
 	DrawDamage(flTime);

@@ -544,8 +544,6 @@ private:
 	// Localisation strings
 	char		m_sDetpackStrings[3][MAX_BUTTON_SIZE];
 
-	char		m_sMapName[64];
-
 	// helper function to update the player menu entries
 	void UpdatePlayerMenu(int menuIndex);
 
@@ -620,6 +618,8 @@ public:
 	int MsgFunc_SpecFade( const char *pszName, int iSize, void *pbuf );	
 	int MsgFunc_ResetFade( const char *pszName, int iSize, void *pbuf );	
 
+	int MsgFunc_NextMap( const char* pszName, int iSize, void* pbuf );
+
 	// Input
 	bool SlotInput( int iSlot );
 
@@ -642,6 +642,9 @@ public:
 	ScorePanel		*m_pScoreBoard;
 	SpectatorPanel *		m_pSpectatorPanel;
 	char			m_szServerName[ MAX_SERVERNAME_LENGTH ];
+	char			m_sMapName[64];
+	char			m_sNextMapName[64];
+
 };
 
 //============================================================

@@ -2632,3 +2632,14 @@ int TeamFortressViewport::MsgFunc_SpecFade( const char *pszName, int iSize, void
 
 	return 1;
 }
+
+int TeamFortressViewport::MsgFunc_NextMap( const char* pszName, int iSize, void* pbuf )
+{
+	BEGIN_READ( pbuf, iSize );
+
+	const char* pszNextMap = READ_STRING();
+
+	strncpy(gViewPort->m_sNextMapName, pszNextMap, sizeof(gViewPort->m_sNextMapName));
+
+	return 1;
+}

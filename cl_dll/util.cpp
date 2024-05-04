@@ -131,3 +131,31 @@ HSPRITE LoadSprite(const char *pszName)
 	return SPR_Load(sz);
 }
 
+const char* StripMapFromPFN(const char* str, char* dest)
+{
+	char sz[70];
+	char* ch;
+	const char* res;
+
+	if (!str)
+		return NULL;
+
+	strncpy(sz, str, 42);
+
+	ch = strchr(sz, '.');
+	if (ch)
+	{
+		*ch = 0;
+	}
+	ch = strchr(sz, '/');
+	if (ch)
+	{
+		memmove(sz, ch + 1, strlen(ch) + 1);
+	}
+
+	memset(((byte*)sz + strlen(sz)), 0, 42 - strlen(sz));
+	strncpy(dest, sz, 32);
+
+	res = (const char*)memset(&dest[strlen(dest)], 0, 33 - strlen(dest));
+	return res;
+}

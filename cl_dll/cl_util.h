@@ -158,6 +158,8 @@ inline int safe_sprintf( char *dst, int len_dst, const char *format, ...)
 	return 0;
 }
 
+const char* StripMapFromPFN(const char* str, char* dest);
+
 // sound functions
 inline void PlaySound( char *szSound, float vol ) { gEngfuncs.pfnPlaySoundByName( szSound, vol ); }
 inline void PlaySound( int iSound, float vol ) { gEngfuncs.pfnPlaySoundByIndex( iSound, vol ); }

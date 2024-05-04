@@ -277,6 +277,34 @@ void ScorePanel::Update()
 		m_TitleLabel.setText(sz);
 	}
 
+	char szCurMap[64];
+	if (gViewPort->m_sMapName)
+	{
+		strcpy(szCurMap, "maps/");
+		strncat(szCurMap, gViewPort->m_sMapName, 32);
+	}
+	else
+	{
+		StripMapFromPFN(gEngfuncs.pfnGetLevelName(), szCurMap);
+		strncpy(gViewPort->m_sMapName, szCurMap, sizeof(szCurMap));
+	}
+
+	sprintf(szCurMap, "Current map: %s", gViewPort->m_sMapName);
+	m_pCurrentMapLabel->setText(szCurMap);
+
+	char szNextMap[64];
+	if (gViewPort->m_sNextMapName)
+	{
+		strncpy(szNextMap, gViewPort->m_sNextMapName, 32);
+		safe_sprintf(szNextMap, 32, "Next map: %s", gViewPort->m_sNextMapName);
+	}
+	else
+	{
+		strncpy(szNextMap, "Next map is unknown", 32);
+	}
+
+	m_pNextMapLabel->setText(szNextMap);
+
 	m_iRows = 0;
 	gViewPort->GetAllPlayersInfo();
 

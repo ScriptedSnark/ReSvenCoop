@@ -131,6 +131,8 @@ int __MsgFunc_GameMode(const char *pszName, int iSize, void *pbuf )
 	return gHUD.MsgFunc_GameMode( pszName, iSize, pbuf );
 }
 
+
+
 // TFFree Command Menu
 void __CmdFunc_OpenCommandMenu(void)
 {
@@ -296,6 +298,13 @@ int __MsgFunc_AllowSpec(const char *pszName, int iSize, void *pbuf)
 	return 0;
 }
 
+int __MsgFunc_NextMap(const char* pszName, int iSize, void* pbuf)
+{
+	if (gViewPort)
+		return gViewPort->MsgFunc_NextMap(pszName, iSize, pbuf);
+	return 0;
+}
+
 int __MsgFunc_StartSound(const char* pszName, int iSize, void* pbuf)
 {
 	BEGIN_READ( pbuf, iSize );
@@ -356,6 +365,8 @@ void CHud :: Init( void )
 	
 	HOOK_MESSAGE( SpecFade );
 	HOOK_MESSAGE( ResetFade );
+
+	HOOK_MESSAGE( NextMap );
 
 	// VGUI Menus
 	HOOK_MESSAGE( VGUIMenu );

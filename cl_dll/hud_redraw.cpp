@@ -472,3 +472,8 @@ int CHud::GetFadeAlpha(float a)
 	else
 		return (a / 100.0 * (MaxAlpha - DefaultAlpha) + DefaultAlpha);
 }
+
+int CHud::GetDigitWidth()
+{
+	return (m_rgrcRects->right - gHUD.m_rgrcRects->left);
+}

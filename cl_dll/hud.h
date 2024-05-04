@@ -562,6 +562,7 @@ private:
 public:
 
 	HSPRITE						m_hsprCursor;
+	float m_fTimeEnd;
 	float m_flTime;	   // the current client time
 	float m_fOldTime;  // the time at which the HUD was last redrawn
 	double m_flTimeDelta; // the difference between flTime and fOldTime
@@ -593,6 +594,8 @@ public:
 	int GetMaxAlpha();
 	void UpdateFade(float& fFade);
 	int GetFadeAlpha(float a);
+	int GetDigitWidth();
+
 
 private:
 	// the memory for these arrays are allocated in the first call to CHud::VidInit(), when the hud.txt and associated sprites are loaded.

@@ -573,6 +573,7 @@ public:
 	void HideCommandMenu( void );
 	void SetCurrentCommandMenu( CCommandMenu *pNewMenu );
 	void SetCurrentMenu( CMenuPanel *pMenu );
+	void SetEndOfTime( float flTimeEnd );
 
 	void ShowScoreBoard( void );
 	void HideScoreBoard( void );

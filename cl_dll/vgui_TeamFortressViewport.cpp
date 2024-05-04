@@ -1711,6 +1711,13 @@ void TeamFortressViewport::SetCurrentMenu( CMenuPanel *pMenu )
 }
 
 //================================================================
+// Time End
+void TeamFortressViewport::SetEndOfTime( float flTimeEnd )
+{
+	gHUD.m_fTimeEnd = flTimeEnd;
+}
+
+//================================================================
 // Text Window
 CMenuPanel* TeamFortressViewport::CreateTextWindow( int iTextToShow )
 {

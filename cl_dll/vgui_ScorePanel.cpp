@@ -136,11 +136,11 @@ ScorePanel::ScorePanel(int x,int y,int wide,int tall) : Panel(x,y,wide,tall)
 	m_pNextMapLabel->setContentAlignment( vgui::Label::a_center );
 	m_pNextMapLabel->setParent(this);
 
-	m_pTimeleftMapLabel = new Label( "Time left: Infinite", 0 - XRES(6), 0, wide, YRES(50) );
-	m_pTimeleftMapLabel->setBgColor( 0, 0, 0, 255 );
-	m_pTimeleftMapLabel->setFgColor( Scheme::sc_primary1 );
-	m_pTimeleftMapLabel->setContentAlignment( vgui::Label::a_east );
-	m_pTimeleftMapLabel->setParent(this);
+	m_pTimeleftLabel = new Label( "Time left: Infinite", 0 - XRES(6), 0, wide, YRES(50) );
+	m_pTimeleftLabel->setBgColor( 0, 0, 0, 255 );
+	m_pTimeleftLabel->setFgColor( Scheme::sc_primary1 );
+	m_pTimeleftLabel->setContentAlignment( vgui::Label::a_east );
+	m_pTimeleftLabel->setParent(this);
 
 	// Setup the header (labels like "name", "class", etc..).
 	m_HeaderGrid.SetDimensions(NUM_COLUMNS, 1);
@@ -288,7 +288,6 @@ void ScorePanel::Update()
 		StripMapFromPFN(gEngfuncs.pfnGetLevelName(), szCurMap);
 		strncpy(gViewPort->m_sMapName, szCurMap, sizeof(szCurMap));
 	}
-
 	sprintf(szCurMap, "Current map: %s", gViewPort->m_sMapName);
 	m_pCurrentMapLabel->setText(szCurMap);
 
@@ -302,8 +301,26 @@ void ScorePanel::Update()
 	{
 		strncpy(szNextMap, "Next map is unknown", 32);
 	}
-
 	m_pNextMapLabel->setText(szNextMap);
+	
+	int seconds = ((int)(gHUD.m_fTimeEnd - gHUD.m_flTime) % 60);
+	if (seconds < 0)
+		seconds = 0;
+
+	int minutes = ((int)(gHUD.m_fTimeEnd - gHUD.m_flTime) / 60.0);
+	if (minutes < 0)
+		minutes = 0;
+
+	char szTime[128];
+	if (seconds || minutes)
+	{
+		safe_sprintf(szTime, sizeof(szTime), "Time left: %.1d:%.2d", minutes, seconds);
+	}
+	else
+	{
+		strncpy(szTime, "Time left: Infinite", sizeof(szTime));
+	}
+	m_pTimeleftLabel->setText(szTime);
 
 	m_iRows = 0;
 	gViewPort->GetAllPlayersInfo();

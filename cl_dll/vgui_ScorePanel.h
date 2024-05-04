@@ -259,7 +259,7 @@ private:
 	Label			m_TitleLabel;
 	Label*			m_pCurrentMapLabel;
 	Label*			m_pNextMapLabel;
-	Label*			m_pTimeleftMapLabel;
+	Label*			m_pTimeleftLabel;
 	
 	// Here is how these controls are arranged hierarchically.
 	// m_HeaderGrid

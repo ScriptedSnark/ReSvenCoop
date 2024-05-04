@@ -305,6 +305,18 @@ int __MsgFunc_NextMap(const char* pszName, int iSize, void* pbuf)
 	return 0;
 }
 
+int __MsgFunc_TimeEnd(const char* pszName, int iSize, void* pbuf)
+{
+	if (gViewPort && gViewPort->m_pScoreBoard)
+	{
+		BEGIN_READ(pbuf, iSize);
+
+		float flTimeEnd = gHUD.m_flTime + READ_LONG();
+		gViewPort->SetEndOfTime(flTimeEnd);
+	}
+	return 1;
+}
+
 int __MsgFunc_StartSound(const char* pszName, int iSize, void* pbuf)
 {
 	BEGIN_READ( pbuf, iSize );
@@ -367,6 +379,7 @@ void CHud :: Init( void )
 	HOOK_MESSAGE( ResetFade );
 
 	HOOK_MESSAGE( NextMap );
+	HOOK_MESSAGE( TimeEnd );
 
 	// VGUI Menus
 	HOOK_MESSAGE( VGUIMenu );

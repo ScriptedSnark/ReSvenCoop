@@ -67,7 +67,7 @@ int g_iUser2 = 0;
 int g_iUser3 = 0;
 
 // Scoreboard positions
-#define SBOARD_INDENT_X			XRES(104)
+#define SBOARD_INDENT_X			XRES(80)
 #define SBOARD_INDENT_Y			YRES(40)
 
 // low-res scoreboard indents
@@ -1678,17 +1678,6 @@ void TeamFortressViewport::UpdateSpectatorPanel()
 void TeamFortressViewport::CreateScoreBoard( void )
 {
 	int xdent = SBOARD_INDENT_X, ydent = SBOARD_INDENT_Y;
-	if (ScreenWidth == 512)
-	{
-		xdent = SBOARD_INDENT_X_512; 
-		ydent = SBOARD_INDENT_Y_512;
-	}
-	else if (ScreenWidth == 400)
-	{
-		xdent = SBOARD_INDENT_X_400; 
-		ydent = SBOARD_INDENT_Y_400;
-	}
-
 	m_pScoreBoard = new ScorePanel(xdent, ydent, ScreenWidth - (xdent * 2), ScreenHeight - (ydent * 2));
 	m_pScoreBoard->setParent(this);
 	m_pScoreBoard->setVisible(false);

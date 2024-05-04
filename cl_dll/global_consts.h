@@ -20,7 +20,7 @@ enum
 };
 
 #define MAX_SCORES					10
-#define MAX_SCOREBOARD_TEAMS		5
+#define MAX_SCOREBOARD_TEAMS		6
 
 #define NUM_ROWS		(MAX_PLAYERS + (MAX_SCOREBOARD_TEAMS * 2))
 

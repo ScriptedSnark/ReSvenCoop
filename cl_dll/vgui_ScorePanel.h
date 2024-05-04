@@ -19,18 +19,27 @@
 #include <ctype.h>
 
 #define MAX_SCORES					10
-#define MAX_SCOREBOARD_TEAMS		5
+#define MAX_SCOREBOARD_TEAMS		6
 
 // Scoreboard cells
 #define COLUMN_TRACKER	0
-#define COLUMN_NAME		1
-#define COLUMN_CLASS	2
-#define COLUMN_SCORE	3
-#define COLUMN_DEATHS	4
-#define COLUMN_LATENCY	5
-#define COLUMN_VOICE	6
-#define COLUMN_BLANK	7
-#define NUM_COLUMNS		8
+#define COLUMN_PRIVILEGE 1
+#define COLUMN_NAME		2
+#define COLUMN_KILLS	3
+#define COLUMN_HEALTH	4
+#define COLUMN_ARMOR	5
+#define COLUMN_SCORE	6
+#define COLUMN_DEATHS	7
+#define COLUMN_LATENCY	8
+#define COLUMN_VOICE	9
+#define COLUMN_SERVEROP	10
+#define COLUMN_BLANK	11
+#define NUM_COLUMNS		12
+
+
+
+
+
 #define NUM_ROWS		(MAX_PLAYERS + (MAX_SCOREBOARD_TEAMS * 2))
 
 using namespace vgui;
@@ -248,6 +257,9 @@ private:
 private:
 
 	Label			m_TitleLabel;
+	Label*			m_pCurrentMapLabel;
+	Label*			m_pNextMapLabel;
+	Label*			m_pTimeleftMapLabel;
 	
 	// Here is how these controls are arranged hierarchically.
 	// m_HeaderGrid

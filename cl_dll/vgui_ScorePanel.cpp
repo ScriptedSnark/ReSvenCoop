@@ -40,9 +40,9 @@ int HUD_IsGame( const char *game );
 int EV_TFC_IsAllyTeam( int iTeam1, int iTeam2 );
 
 // Scoreboard dimensions
-#define SBOARD_TITLE_SIZE_Y			YRES(22)
+#define SBOARD_TITLE_SIZE_Y			YRES(20)
 
-#define X_BORDER					XRES(4)
+#define X_BORDER					XRES(6)
 
 // Column sizes
 class SBColumnInfo
@@ -57,14 +57,18 @@ public:
 
 SBColumnInfo g_ColumnInfo[NUM_COLUMNS] =
 {
-	{NULL,			24,			Label::a_east},		// tracker column
-	{NULL,			140,		Label::a_east},		// name
-	{NULL,			56,			Label::a_east},		// class
-	{"#SCORE",		40,			Label::a_east},
-	{"#DEATHS",		46,			Label::a_east},
-	{"#LATENCY",	46,			Label::a_east},
-	{"#VOICE",		40,			Label::a_east},
-	{NULL,			2,			Label::a_east},		// blank column to take up the slack
+	{NULL,			1,			Label::a_east},		// tracker column
+	{NULL,			24,			Label::a_west},		// privilege
+	{NULL,			158,		Label::a_west},		// name
+	{NULL,			0,			Label::a_east},		// kills
+	{"#HEALTH",		50,			Label::a_east},		// health
+	{"#ARMOR",		42,			Label::a_east},		// armor
+	{"#SCORE",		42,			Label::a_east},		// score
+	{"#DEATHS",		42,			Label::a_east},		// deaths
+	{"#LATENCY",	46,			Label::a_east},		// latency
+	{"#VOICE",		40,			Label::a_east},		// voice
+	{NULL,			24,			Label::a_west},		// server operator
+	{NULL,			1,			Label::a_east},		// blank column to take up the slack
 };
 
 
@@ -116,15 +120,27 @@ ScorePanel::ScorePanel(int x,int y,int wide,int tall) : Panel(x,y,wide,tall)
 	setBorder(border);
 	setPaintBorderEnabled(true);
 
-	int xpos = g_ColumnInfo[0].m_Width + 3;
-	if (ScreenWidth >= 640)
-	{
-		// only expand column size for res greater than 640
-		xpos = XRES(xpos);
-	}
-	m_TitleLabel.setBounds(xpos, 4, wide, SBOARD_TITLE_SIZE_Y);
+	m_TitleLabel.setBounds(X_BORDER, 2, wide, SBOARD_TITLE_SIZE_Y);
 	m_TitleLabel.setContentFitted(false);
 	m_TitleLabel.setParent(this);
+
+	m_pCurrentMapLabel = new Label( "Current map is unknown", XRES(6), 0, wide, YRES(50) );
+	m_pCurrentMapLabel->setBgColor( 0, 0, 0, 255 );
+	m_pCurrentMapLabel->setFgColor( Scheme::sc_primary1 );
+	m_pCurrentMapLabel->setContentAlignment( vgui::Label::a_west );
+	m_pCurrentMapLabel->setParent(this);
+
+	m_pNextMapLabel = new Label( " Next map is unknown", 0, 0, wide, YRES(50) );
+	m_pNextMapLabel->setBgColor( 0, 0, 0, 255 );
+	m_pNextMapLabel->setFgColor( Scheme::sc_primary1 );
+	m_pNextMapLabel->setContentAlignment( vgui::Label::a_center );
+	m_pNextMapLabel->setParent(this);
+
+	m_pTimeleftMapLabel = new Label( "Time left: Infinite", 0 - XRES(6), 0, wide, YRES(50) );
+	m_pTimeleftMapLabel->setBgColor( 0, 0, 0, 255 );
+	m_pTimeleftMapLabel->setFgColor( Scheme::sc_primary1 );
+	m_pTimeleftMapLabel->setContentAlignment( vgui::Label::a_east );
+	m_pTimeleftMapLabel->setParent(this);
 
 	// Setup the header (labels like "name", "class", etc..).
 	m_HeaderGrid.SetDimensions(NUM_COLUMNS, 1);
@@ -176,10 +192,10 @@ ScorePanel::ScorePanel(int x,int y,int wide,int tall) : Panel(x,y,wide,tall)
 	// Set the width of the last column to be the remaining space.
 	int ex, ey, ew, eh;
 	m_HeaderGrid.GetEntryBox(NUM_COLUMNS - 2, 0, ex, ey, ew, eh);
-	m_HeaderGrid.SetColumnWidth(NUM_COLUMNS - 1, (wide - X_BORDER) - (ex + ew));
+	m_HeaderGrid.SetColumnWidth(NUM_COLUMNS - 1, (wide - (XRES(1) * 2)) - (ex + ew));
 
 	m_HeaderGrid.AutoSetRowHeights();
-	m_HeaderGrid.setBounds(X_BORDER, SBOARD_TITLE_SIZE_Y, wide - X_BORDER*2, m_HeaderGrid.GetRowHeight(0));
+	m_HeaderGrid.setBounds(XRES(1) * 2, YRES(22) + YRES(10), wide - ((XRES(1) * 2) * 2), m_HeaderGrid.GetRowHeight(0));
 	m_HeaderGrid.setParent(this);
 	m_HeaderGrid.setBgColor(0,0,0,255);
 
@@ -221,15 +237,6 @@ ScorePanel::ScorePanel(int x,int y,int wide,int tall) : Panel(x,y,wide,tall)
 	m_HitTestPanel.setParent(this);
 	m_HitTestPanel.setBounds(0, 0, wide, tall);
 	m_HitTestPanel.addInputSignal(this);
-
-	m_pCloseButton = new CommandButton( "x", wide-XRES(12 + 4), YRES(2), XRES( 12 ) , YRES( 12 ) );
-	m_pCloseButton->setParent( this );
-	m_pCloseButton->addActionSignal( new CMenuHandler_StringCommandWatch( "-showscores", true ) );
-	m_pCloseButton->setBgColor(0,0,0,255);
-	m_pCloseButton->setFgColor( 255, 255, 255, 0 );
-	m_pCloseButton->setFont(tfont);
-	m_pCloseButton->setBoundKey( (char)255 );
-	m_pCloseButton->setContentAlignment(Label::a_center);
 
 
 	Initialize();
@@ -669,11 +676,11 @@ void ScorePanel::FillGrid()
 			}				
 
 			// Align 
-			if (col == COLUMN_NAME || col == COLUMN_CLASS)
+			if (col == COLUMN_NAME)
 			{
 				pLabel->setContentAlignment( vgui::Label::a_west );
 			}
-			else if (col == COLUMN_TRACKER)
+			else if (col == COLUMN_TRACKER || col == COLUMN_PRIVILEGE || col == COLUMN_SERVEROP)
 			{
 				pLabel->setContentAlignment( vgui::Label::a_center );
 			}
@@ -720,8 +727,6 @@ void ScorePanel::FillGrid()
 					break;
 				case COLUMN_VOICE:
 					break;
-				case COLUMN_CLASS:
-					break;
 				case COLUMN_SCORE:
 					if ( m_iIsATeam[row] == TEAM_YES )
 						sprintf(sz, "%.0f", team_info->score );
@@ -740,10 +745,14 @@ void ScorePanel::FillGrid()
 			}
 			else
 			{
-				bool bShowClass = false;
-
 				switch (col)
 				{
+				case COLUMN_PRIVILEGE:
+					pLabel->setFgColor(255, 255, 255, 0);
+
+					// TODO: Implement
+					break;
+
 				case COLUMN_NAME:
 					/*
 					if (g_pTrackerUser)
@@ -758,72 +767,134 @@ void ScorePanel::FillGrid()
 						}
 					}
 					*/
-					sprintf(sz, "%s  ", pl_info->name);
+					sprintf(sz, "%s", pl_info->name);
 					break;
+				case COLUMN_HEALTH:
+					if (g_IsSpectator[m_iSortedRows[row]])
+					{
+						sprintf(sz, "OBSERVER");
+					}
+					else
+					{
+						int health = g_PlayerExtraInfo[m_iSortedRows[row]].health;
+						if (health <= -128)
+						{
+							sprintf(sz, "-");
+						}
+						else if (health <= 0)
+						{
+							sprintf(sz, "DEAD");
+							pLabel->setFgColor(255, 0, 0, 0);
+						}
+						else if (health > 75)
+						{
+							pLabel->setFgColor(0, 255, 0, 0);
+							sprintf(sz, "%d", health);
+						}
+						else if (health > 50)
+						{
+							pLabel->setFgColor(255, 255, 0, 0);
+							sprintf(sz, "%d", health);
+						}
+						else if (health > 25)
+						{
+							pLabel->setFgColor(255, 128, 0, 0);
+							sprintf(sz, "%d", health);
+						}
+						else
+						{
+							pLabel->setFgColor(255, 0, 0, 0);
+							sprintf(sz, "%d", health);
+						}
+					}
+					break;
+				case COLUMN_ARMOR:
+					if (g_IsSpectator[m_iSortedRows[row]])
+					{
+						sprintf(sz, "-");
+					}
+					else
+					{
+						int armor = g_PlayerExtraInfo[m_iSortedRows[row]].armor;
+						if (armor <= -128)
+						{
+							sprintf(sz, "-");
+						}
+						else if (armor <= -1)
+						{
+							sprintf(sz, "N/A");
+						}
+						else if (armor > 75)
+						{
+							pLabel->setFgColor(0, 255, 0, 0);
+							sprintf(sz, "%d", armor);
+						}
+						else if (armor > 50)
+						{
+							pLabel->setFgColor(255, 255, 0, 0);
+							sprintf(sz, "%d", armor);
+						}
+						else if (armor > 25)
+						{
+							pLabel->setFgColor(255, 128, 0, 0);
+							sprintf(sz, "%d", armor);
+						}
+						else
+						{
+							pLabel->setFgColor(255, 0, 0, 0);
+							sprintf(sz, "%d", armor);
+						}
+					}
+					break;
+
+				case COLUMN_SCORE:
+					sprintf(sz, "%d", (int)g_PlayerExtraInfo[m_iSortedRows[row]].score);
+					break;
+				case COLUMN_DEATHS:
+					sprintf(sz, "%d", g_PlayerExtraInfo[m_iSortedRows[row]].deaths);
+					break;
+				case COLUMN_LATENCY:
+					{
+						int ping = g_PlayerInfoList[m_iSortedRows[row]].ping;
+						if (ping >= 400)
+						{
+							pLabel->setFgColor(255, 0, 0, 0);
+							sprintf(sz, "%d", ping);
+						}
+						else if (ping >= 250)
+						{
+							pLabel->setFgColor(255, 127, 0, 0);
+							sprintf(sz, "%d", ping);
+						}
+						else if (ping >= 150)
+						{
+							pLabel->setFgColor(255, 255, 0, 0);
+							sprintf(sz, "%d", ping);
+						}
+						else if (ping >= 75)
+						{
+							pLabel->setFgColor(127, 255, 0, 0);
+							sprintf(sz, "%d", ping);
+						}
+						else
+						{
+							pLabel->setFgColor(0, 255, 31, 0);
+							sprintf(sz, "%d", ping);
+						}
+					}
+					break;
+
 				case COLUMN_VOICE:
 					sz[0] = 0;
 					GetClientVoiceMgr()->UpdateSpeakerImage(pLabel, m_iSortedRows[row]);
 					break;
-				case COLUMN_CLASS:
-					// No class for other team's members (unless allied or spectator)
-					if ( gViewPort && EV_TFC_IsAllyTeam( g_iTeamNumber, g_PlayerExtraInfo[ m_iSortedRows[row] ].teamnumber )  )
-						bShowClass = true;
-					// Don't show classes if this client hasnt picked a team yet
-					if ( g_iTeamNumber == 0 )
-						bShowClass = false;
-#ifdef _TFC
-					// in TFC show all classes in spectator mode
-					if ( g_iUser1 )
-						bShowClass = true;
-#endif
 
-					if (bShowClass)
-					{
-						// Only print Civilian if this team are all civilians
-						bool bNoClass = false;
-						if ( g_PlayerExtraInfo[ m_iSortedRows[row] ].playerclass == 0 )
-						{
-							if ( gViewPort->GetValidClasses( g_PlayerExtraInfo[ m_iSortedRows[row] ].teamnumber ) != -1 )
-								bNoClass = true;
-						}
+				case COLUMN_SERVEROP:
+					pLabel->setFgColor(255, 255, 255, 0);
 
-						if (bNoClass)
-							sprintf(sz, "");
-						else
-							sprintf( sz, "%s", CHudTextMessage::BufferedLocaliseTextString( sLocalisedClasses[ g_PlayerExtraInfo[ m_iSortedRows[row] ].playerclass ] ) );
-					}
-					else
-					{
-						strcpy(sz, "");
-					}
+					// TODO: Implement
 					break;
 
-				case COLUMN_TRACKER:
-					/*
-					if (g_pTrackerUser)
-					{
-						int playerSlot = m_iSortedRows[row];
-						int trackerID = gEngfuncs.GetTrackerIDForPlayer(playerSlot);
-
-						if (g_pTrackerUser->IsFriend(trackerID) && trackerID != g_pTrackerUser->GetTrackerID())
-						{
-							pLabel->setImage(m_pTrackerIcon);
-							pLabel->setFgColorAsImageColor(false);
-							m_pTrackerIcon->setColor(Color(255, 255, 255, 0));
-						}
-					}
-					*/
-					break;
-
-				case COLUMN_SCORE:
-					sprintf(sz, "%d", (int)g_PlayerExtraInfo[ m_iSortedRows[row] ].score );
-					break;
-				case COLUMN_DEATHS:
-					sprintf(sz, "%d",  g_PlayerExtraInfo[ m_iSortedRows[row] ].deaths );
-					break;
-				case COLUMN_LATENCY:
-					sprintf(sz, "%d", g_PlayerInfoList[ m_iSortedRows[row] ].ping );
-					break;
 				default:
 					break;
 				}

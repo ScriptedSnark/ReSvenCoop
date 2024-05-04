@@ -135,6 +135,12 @@ int __MsgFunc_GameMode(const char *pszName, int iSize, void *pbuf )
 	return gHUD.MsgFunc_GameMode( pszName, iSize, pbuf );
 }
 
+int __MsgFunc_ClassicMode(const char* pszName, int iSize, void* pbuf)
+{
+	return gHUD.MsgFunc_ClassicMode(pszName, iSize, pbuf);
+}
+
+
 void __CmdFunc_npc_moveto(void)
 {
 	// in pseudocode we use player origin, I guess?
@@ -379,6 +385,7 @@ void CHud :: Init( void )
 	HOOK_MESSAGE( ViewMode );
 	HOOK_MESSAGE( SetFOV );
 	HOOK_MESSAGE( Concuss );
+	HOOK_MESSAGE( ClassicMode );
 
 	HOOK_COMMAND( "npc_moveto", npc_moveto );
 

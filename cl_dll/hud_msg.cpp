@@ -170,3 +170,10 @@ int CHud :: MsgFunc_Concuss( const char *pszName, int iSize, void *pbuf )
 		this->m_StatusIcons.DisableIcon("dmg_concuss");
 	return 1;
 }
+
+int CHud :: MsgFunc_ClassicMode( const char* pszName, int iSize, void* pbuf )
+{
+	BEGIN_READ( pbuf, iSize );
+	gHUD.m_bClassicMode = READ_BYTE();
+	return 1;
+}

@@ -596,6 +596,7 @@ public:
 	void UpdateFade(float& fFade);
 	int GetFadeAlpha(float a);
 	int GetDigitWidth();
+	HSPRITE LoadSprite(char* name, wrect_t& rect);
 
 
 private:

@@ -19,6 +19,7 @@
 #include "hud.h"
 #include "cl_util.h"
 #include "bench.h"
+#include "port.h"
 
 #include "vgui_TeamFortressViewport.h"
 
@@ -215,25 +216,6 @@ int CHud :: Redraw( float flTime, int intermission )
 
 			pList = pList->pNext;
 		}
-	}
-
-	// are we in demo mode? do we need to draw the logo in the top corner?
-	if (m_iLogo)
-	{
-		int x, y, i;
-
-		if (m_hsprLogo == 0)
-			m_hsprLogo = LoadSprite("sprites/%d_logo.spr");
-		
-		x = SPR_Width(m_hsprLogo, 0);
-		x = ScreenWidth - x;
-		y = SPR_Height(m_hsprLogo, 0)/2;
-
-		// Draw the logo at 20 fps
-		int iFrame = (int)(flTime * 20) % MAX_LOGO_FRAMES;
-		i = grgLogoFrame[iFrame] - 1;
-
-		gHUD.DrawSprite(x, y, m_hsprLogo, NULL, 250, 250, 250, i, SPR_ADDITIVE);
 	}
 
 	/*
@@ -476,4 +458,31 @@ int CHud::GetFadeAlpha(float a)
 int CHud::GetDigitWidth()
 {
 	return (m_rgrcRects->right - gHUD.m_rgrcRects->left);
+}
+
+HSPRITE CHud::LoadSprite(char* name, wrect_t& rect)
+{
+	HSPRITE SpriteIndex;
+	char path[MAX_PATH];
+
+	if (!name || !*name)
+		return -1;
+
+	if (strstr(name, ".spr"))
+	{
+		sprintf(path, "sprites/%s", name);
+		return gEngfuncs.pfnSPR_Load(path);
+	}
+	else
+	{
+		SpriteIndex = gHUD.GetSpriteIndex(name);
+
+		if (!rect.left && !rect.top && !rect.right && !rect.bottom)
+			rect = gHUD.GetSpriteRect(SpriteIndex);
+
+		if (SpriteIndex >= 0)
+			return SpriteIndex;
+	}
+
+	return 0;
 }
